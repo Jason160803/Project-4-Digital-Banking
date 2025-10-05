@@ -1,9 +1,10 @@
 # digital_banking/tests/test_customer_api.py
 
 from fastapi.testclient import TestClient
-from ..main import app
-from ..database import accounts_db, transactions_db
-from .. import services
+from digital_banking.main import app
+from digital_banking.database import accounts_db, transactions_db
+from digital_banking import services
+from digital_banking.models import AccountCreate
 
 client = TestClient(app)
 
