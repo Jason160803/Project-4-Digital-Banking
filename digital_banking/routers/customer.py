@@ -1,5 +1,3 @@
-# digital_banking/routers/customer.py
-
 from fastapi import APIRouter, Path
 from typing import List
 

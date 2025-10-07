@@ -1,5 +1,3 @@
-# digital_banking/database.py
-
 from datetime import date
 
 # In-memory data storage to hold data while the server is running

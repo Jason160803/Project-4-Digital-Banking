@@ -1,5 +1,3 @@
-# digital_banking/tests/test_admin_api.py
-
 from fastapi.testclient import TestClient
 from digital_banking.main import app
 from digital_banking.database import accounts_db, transactions_db

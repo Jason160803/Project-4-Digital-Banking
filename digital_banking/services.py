@@ -1,5 +1,3 @@
-# digital_banking/services.py
-
 import random
 from datetime import datetime
 from fastapi import HTTPException, status

@@ -1,5 +1,3 @@
-# digital_banking/routers/admin.py
-
 from fastapi import APIRouter, status, Body
 from typing import List
 
