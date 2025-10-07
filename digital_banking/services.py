@@ -7,10 +7,10 @@ from fastapi import HTTPException, status
 from . import database as db
 
 # --- Business Logic Constants (Assumptions) ---
-MINIMUM_BALANCE = 10000.0
-INTER_BANK_TRANSFER_FEE = 6500.0
+MINIMUM_BALANCE = 20000.0
+INTER_BANK_TRANSFER_FEE = 5000.0
 MAX_TRANSFER_AMOUNT = 25000000.0
-DAILY_TRANSACTION_LIMIT = 10
+DAILY_TRANSACTION_LIMIT = 15
 LOCAL_BANK_NAME = "Bank Digital API"
 
 def _generate_account_number():
