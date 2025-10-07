@@ -83,7 +83,6 @@ def test_admin_get_all_accounts_hides_balance():
     # Ambil data akun pertama dari daftar
     first_account_from_admin_view = accounts_list[0]
 
-    # INI BAGIAN TERPENTING:
     # Pastikan 'balance' TIDAK ADA dalam respons
     assert "balance" not in first_account_from_admin_view
 
