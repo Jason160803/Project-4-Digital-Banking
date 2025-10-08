@@ -34,13 +34,13 @@ def test_get_all_accounts():
     assert "balance" not in data[0]
 
 def test_update_account_info():
-    res_create = client.post("/admin/accounts/", json={"name": "Joko", "bank_name": "Bank C"})
+    res_create = client.post("/admin/accounts/", json={"name": "Erwin", "bank_name": "Bank C"})
     acc_num = res_create.json()["account_number"]
     
-    response = client.put(f"/admin/accounts/{acc_num}/", json={"name": "Joko Susilo"})
+    response = client.put(f"/admin/accounts/{acc_num}/", json={"name": "Erwin W"})
     assert response.status_code == 200
-    assert response.json()["name"] == "Joko Susilo"
-    assert accounts_db[acc_num]["name"] == "Joko Susilo"
+    assert response.json()["name"] == "Erwin W"
+    assert accounts_db[acc_num]["name"] == "Erwin W"
 
 def test_deactivate_account():
     res_create = client.post("/admin/accounts/", json={"name": "Eka", "bank_name": "Bank D"})
