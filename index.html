@@ -48,9 +48,20 @@
             border-radius: 4px;
             font-size: 16px;
             cursor: pointer;
+            margin-top: 5px;
         }
         button:hover {
             background-color: #0056b3;
+        }
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
         }
         #response-area {
             background-color: #2d2d2d;
@@ -60,6 +71,7 @@
             white-space: pre-wrap;
             word-wrap: break-word;
             font-family: "Courier New", Courier, monospace;
+            min-height: 50px;
         }
     </style>
 </head>
@@ -79,12 +91,28 @@
     </div>
 
     <div class="card">
-        <h2>Nasabah: Lakukan Transaksi</h2>
+        <h2>Nasabah: Cek Informasi Akun</h2>
+        <form id="info-form">
+            <input type="text" id="info-account" placeholder="Masukkan Nomor Rekening Anda" required>
+            <div class="button-group">
+                <button type="submit" id="check-details-btn">Cek Saldo & Detail</button>
+                <button type="submit" id="check-history-btn" class="secondary">Lihat Riwayat Transaksi</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Nasabah: Lakukan Transaksi Keuangan</h2>
         <form id="transaction-form">
-            <input type="text" id="trans-account" placeholder="Nomor Rekening" required>
-            <input type="password" id="trans-pin" placeholder="6-Digit PIN" required>
+            <input type="text" id="trans-account" placeholder="Nomor Rekening Sumber" required>
+            <input type="password" id="trans-pin" placeholder="6-Digit PIN Anda" required>
             <input type="number" id="trans-amount" placeholder="Jumlah (Amount)" required>
-            <button type="submit">Lakukan Deposit</button>
+            <input type="text" id="trans-target-account" placeholder="Nomor Rekening Tujuan (untuk transfer)">
+            <div class="button-group">
+                <button type="submit" id="deposit-btn">💰 Deposit</button>
+                <button type="submit" id="withdraw-btn" class="secondary">💸 Tarik Tunai</button>
+                <button type="submit" id="transfer-btn">➡️ Transfer</button>
+            </div>
         </form>
     </div>
 
@@ -101,37 +129,61 @@
 
         // Event listener untuk form Buat Akun
         document.getElementById('create-account-form').addEventListener('submit', async (event) => {
-            event.preventDefault(); // Mencegah form reload halaman
-
-            const name = document.getElementById('create-name').value;
-            const bankName = document.getElementById('create-bank').value;
-            const pin = document.getElementById('create-pin').value;
-
+            event.preventDefault();
             const body = {
-                name: name,
-                bank_name: bankName,
-                pin: pin
+                name: document.getElementById('create-name').value,
+                bank_name: document.getElementById('create-bank').value,
+                pin: document.getElementById('create-pin').value
             };
-
             await performFetch('/admin/accounts/', 'POST', body);
+        });
+        
+        // Event listener untuk form Informasi
+        document.getElementById('info-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const accountNumber = document.getElementById('info-account').value;
+            if (!accountNumber) {
+                responseArea.textContent = 'Nomor rekening harus diisi.';
+                return;
+            }
+
+            // Cek tombol mana yang ditekan
+            const submitterId = event.submitter.id;
+            if (submitterId === 'check-details-btn') {
+                await performFetch(`/accounts/${accountNumber}/details/`, 'GET');
+            } else if (submitterId === 'check-history-btn') {
+                await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET');
+            }
         });
 
         // Event listener untuk form Transaksi
         document.getElementById('transaction-form').addEventListener('submit', async (event) => {
             event.preventDefault();
-
             const accountNumber = document.getElementById('trans-account').value;
             const pin = document.getElementById('trans-pin').value;
             const amount = parseFloat(document.getElementById('trans-amount').value);
+            const targetAccountNumber = document.getElementById('trans-target-account').value;
 
-            const body = {
-                amount: amount,
-                pin: pin
-            };
-            
-            // Panggil endpoint deposit
-            const endpoint = `/accounts/${accountNumber}/deposit/`;
-            await performFetch(endpoint, 'POST', body);
+            const submitterId = event.submitter.id;
+
+            if (submitterId === 'deposit-btn') {
+                const body = { amount: amount, pin: pin };
+                await performFetch(`/accounts/${accountNumber}/deposit/`, 'POST', body);
+            } else if (submitterId === 'withdraw-btn') {
+                const body = { amount: amount, pin: pin };
+                await performFetch(`/accounts/${accountNumber}/withdraw/`, 'POST', body);
+            } else if (submitterId === 'transfer-btn') {
+                if (!targetAccountNumber) {
+                    responseArea.textContent = 'Nomor rekening tujuan harus diisi untuk transfer.';
+                    return;
+                }
+                const body = {
+                    amount: amount,
+                    pin: pin,
+                    target_account_number: targetAccountNumber
+                };
+                await performFetch(`/accounts/${accountNumber}/transfer/`, 'POST', body);
+            }
         });
 
         // Fungsi umum untuk melakukan fetch ke API
@@ -140,9 +192,7 @@
             try {
                 const options = {
                     method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Content-Type': 'application/json' }
                 };
                 if (body) {
                     options.body = JSON.stringify(body);
@@ -150,12 +200,16 @@
 
                 const response = await fetch(baseUrl + endpoint, options);
                 const data = await response.json();
-
-                // Tampilkan hasil dengan format JSON yang rapi
-                responseArea.textContent = JSON.stringify(data, null, 2);
+                
+                // Jika response tidak ok (error), tampilkan pesan error yang jelas
+                if (!response.ok) {
+                   responseArea.textContent = `Error ${response.status}: ${JSON.stringify(data, null, 2)}`;
+                } else {
+                   responseArea.textContent = JSON.stringify(data, null, 2);
+                }
 
             } catch (error) {
-                responseArea.textContent = `Terjadi Error: ${error.message}`;
+                responseArea.textContent = `Terjadi Error Jaringan: ${error.message}`;
             }
         }
     });
