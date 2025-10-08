@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Banking Test UI</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #response-area {
+            background-color: #2d2d2d;
+            color: #f4f4f4;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Digital Banking Test Interface 🌐</h1>
+
+    <div class="card">
+        <h2>Admin: Buat Akun Baru</h2>
+        <form id="create-account-form">
+            <input type="text" id="create-name" placeholder="Nama Nasabah" required>
+            <input type="text" id="create-bank" placeholder="Nama Bank" required>
+            <input type="password" id="create-pin" placeholder="6-Digit PIN" required>
+            <button type="submit">Buat Akun</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Nasabah: Lakukan Transaksi</h2>
+        <form id="transaction-form">
+            <input type="text" id="trans-account" placeholder="Nomor Rekening" required>
+            <input type="password" id="trans-pin" placeholder="6-Digit PIN" required>
+            <input type="number" id="trans-amount" placeholder="Jumlah (Amount)" required>
+            <button type="submit">Lakukan Deposit</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Respons dari API</h2>
+        <pre id="response-area">Menunggu permintaan...</pre>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const baseUrl = 'http://127.0.0.1:8000';
+        const responseArea = document.getElementById('response-area');
+
+        // Event listener untuk form Buat Akun
+        document.getElementById('create-account-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Mencegah form reload halaman
+
+            const name = document.getElementById('create-name').value;
+            const bankName = document.getElementById('create-bank').value;
+            const pin = document.getElementById('create-pin').value;
+
+            const body = {
+                name: name,
+                bank_name: bankName,
+                pin: pin
+            };
+
+            await performFetch('/admin/accounts/', 'POST', body);
+        });
+
+        // Event listener untuk form Transaksi
+        document.getElementById('transaction-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const accountNumber = document.getElementById('trans-account').value;
+            const pin = document.getElementById('trans-pin').value;
+            const amount = parseFloat(document.getElementById('trans-amount').value);
+
+            const body = {
+                amount: amount,
+                pin: pin
+            };
+            
+            // Panggil endpoint deposit
+            const endpoint = `/accounts/${accountNumber}/deposit/`;
+            await performFetch(endpoint, 'POST', body);
+        });
+
+        // Fungsi umum untuk melakukan fetch ke API
+        async function performFetch(endpoint, method, body = null) {
+            responseArea.textContent = 'Memproses...';
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(baseUrl + endpoint, options);
+                const data = await response.json();
+
+                // Tampilkan hasil dengan format JSON yang rapi
+                responseArea.textContent = JSON.stringify(data, null, 2);
+
+            } catch (error) {
+                responseArea.textContent = `Terjadi Error: ${error.message}`;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

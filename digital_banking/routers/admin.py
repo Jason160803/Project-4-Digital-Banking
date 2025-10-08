@@ -14,8 +14,9 @@ def create_account(account_create: models.AccountCreate):
     """
     Admin: Create a new customer account.
     """
-    new_account = services.create_new_account(account_create.dict())
-    return {**new_account, "account_number": list(accounts_db.keys())[-1]}
+    # Langsung kirim objek 'account_create' tanpa mengubahnya ke dict
+    new_account = services.create_new_account(account_create)
+    return new_account
 
 @router.get("/accounts/", response_model=List[models.AccountInfoAdmin])
 def get_all_accounts():
