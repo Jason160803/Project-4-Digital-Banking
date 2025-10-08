@@ -13,10 +13,10 @@ def setup_function():
     transactions_db.clear()
 
 def test_create_account():
-    response = client.post("/admin/accounts/", json={"name": "Budi Santoso", "bank_name": "Bank Digital API"})
+    response = client.post("/admin/accounts/", json={"name": "Toriq T", "bank_name": "Bank Digital API"})
     assert response.status_code == 201
     data = response.json()
-    assert data["name"] == "Budi Santoso"
+    assert data["name"] == "Toriq T"
     assert data["balance"] == 0.0
     assert data["is_active"] is True
     assert len(accounts_db) == 1
@@ -43,7 +43,7 @@ def test_update_account_info():
     assert accounts_db[acc_num]["name"] == "Erwin W"
 
 def test_deactivate_account():
-    res_create = client.post("/admin/accounts/", json={"name": "Eka", "bank_name": "Bank D"})
+    res_create = client.post("/admin/accounts/", json={"name": "Rai", "bank_name": "Bank D"})
     acc_num = res_create.json()["account_number"]
     
     assert accounts_db[acc_num]["is_active"] is True
