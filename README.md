@@ -24,11 +24,9 @@ uvicorn digital_banking.main:app --reload
 Server akan berjalan di http://127.0.0.1:8000.Cara Melakukan Pengujian
 
 A. Melalui Unit Test:
+
 Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. pytest Semua tes harus PASS jika konfigurasi sudah benar.
 
-B. Melalui Antarmuka Web (UI)Proyek ini dilengkapi dengan index.
-html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap.Pastikan server API sedang berjalan.
-Buka file index.html.
-Gunakan formulir yang tersedia untuk berinteraksi dengan semua fitur API secara visual.
+B. Melalui file index.html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap. Pastikan server API sedang berjalan.
 
 C. Melalui Swagger UIAnda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI.Buka browser dan kunjungi: http://127.0.0.1:8000/docs
