@@ -238,7 +238,7 @@
                 responseArea.textContent = "Transaksi berhasil! Memuat data terbaru...";
                 const detailData = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
                 if (detailData) {
-                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${detailData.name}<br><strong>Saldo:</strong> Rp ${detailData.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${detailData.daily_transaction_count} / 15`;
+                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${detailData.name}<br><strong>Saldo:</strong> Rp ${detailData.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${detailData.daily_transaction_count} / 10`;
                     // Setelah transaksi sukses, bisa juga langsung tampilkan riwayat
                      const historyData = await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET', null, false);
                     if (historyData) {
