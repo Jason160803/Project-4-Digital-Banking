@@ -9,10 +9,12 @@ git clone [https://github.com/Jason160803/Project-4-Digital-Banking.git](https:/
 
 2. Setup Virtual EnvironmentSangat disarankan untuk menggunakan virtual environment agar dependensi proyek tidak tercampur
 Menggunakan PowerShell
+
 python -m venv venv
 
-# Aktivasi (Windows)
-3. .\venv\Scripts\activate
+Aktivasi (Windows)
+
+1. .\venv\Scripts\activate
 
 4. Instal Dependensi
 Instal semua library yang dibutuhkan dengan satu perintah:
@@ -23,7 +25,7 @@ uvicorn digital_banking.main:app --reload
 
 Server akan berjalan di http://127.0.0.1:8000.
 
-Cara Melakukan Pengujian:
+# Cara Melakukan Pengujian:
 
 1. Melalui Unit Test: Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. pytest Semua tes harus PASS jika konfigurasi sudah benar.
 
