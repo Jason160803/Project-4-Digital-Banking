@@ -64,7 +64,7 @@ def process_deposit(account_number: str, amount: float, pin: str, timestamp:str)
     validate_pin(account, pin)
     validate_active_account(account)
     account['balance'] += amount
-    _log_transaction(account_number, "DEPOSIT", amount, f"Deposited ${amount:,.2f}", timestamp=timestamp)
+    _log_transaction(account_number, "DEPOSIT", amount, f"Deposited {amount:,.2f}", timestamp=timestamp)
     return account
 
 def process_withdrawal(account_number: str, amount: float, pin: str, timestamp:str):
