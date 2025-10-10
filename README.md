@@ -25,9 +25,7 @@ Server akan berjalan di http://127.0.0.1:8000.
 
 Cara Melakukan Pengujian:
 
-1. Melalui Unit Test:
-
-Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. pytest Semua tes harus PASS jika konfigurasi sudah benar.
+1. Melalui Unit Test: Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. pytest Semua tes harus PASS jika konfigurasi sudah benar.
 
 2. Melalui file index.html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap. Pastikan server API sedang berjalan.
 
