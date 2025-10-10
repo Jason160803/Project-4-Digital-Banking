@@ -13,13 +13,22 @@ python -m venv venv
 3. .\venv\Scripts\activate
 
 4. Instal Dependensi
-Instal semua library yang dibutuhkan dengan satu perintah.pip install -r requirements.txt
+Instal semua library yang dibutuhkan dengan satu perintah:
+pip install -r requirements.txt
 
-5. Jalankan Server APIJalankan server Uvicorn dari direktori utama proyek.uvicorn digital_banking.main:app --reload
+5. Jalankan Server APIJalankan server Uvicorn dari direktori utama proyek:
+uvicorn digital_banking.main:app --reload
+
 Server akan berjalan di http://127.0.0.1:8000.Cara Melakukan Pengujian
-A. Melalui Unit TestJalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar.pytest
-Semua tes harus PASS jika konfigurasi sudah benar.
-B. Melalui Antarmuka Web (UI)Proyek ini dilengkapi dengan index.html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap.Pastikan server API sedang berjalan.Buka file index.html langsung di browser Anda (cukup klik dua kali filenya).Gunakan formulir yang tersedia untuk berinteraksi dengan semua fitur API secara visual.
+
+A. Melalui Unit Test:
+Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. pytest Semua tes harus PASS jika konfigurasi sudah benar.
+
+B. Melalui Antarmuka Web (UI)Proyek ini dilengkapi dengan index.
+html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap.Pastikan server API sedang berjalan.
+Buka file index.
+html langsung di browser Anda (cukup klik dua kali filenya).
+Gunakan formulir yang tersedia untuk berinteraksi dengan semua fitur API secara visual.
 C. Melalui Swagger UIAnda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI.Buka browser dan kunjungi: http://127.0.0.1:8000/docs
 
 
