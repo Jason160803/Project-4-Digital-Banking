@@ -7,7 +7,7 @@
     Pastikan Anda memiliki Python 3.8+ terinstal.
     Clone repositori ini:
     ```bash
-    git clone [https://github.com/Jason160803/Project-4-Digital-Banking.git](https://github.com/Jason160803/Project-4-Digital-Banking.git)
+    git clone https://github.com/Jason160803/Project-4-Digital-Banking.git
     ```
 
 2.  **Setup Virtual Environment**
