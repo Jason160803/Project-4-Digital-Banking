@@ -21,12 +21,14 @@ pip install -r requirements.txt
 5. Jalankan Server APIJalankan server Uvicorn dari direktori utama proyek:
 uvicorn digital_banking.main:app --reload
 
-Server akan berjalan di http://127.0.0.1:8000.Cara Melakukan Pengujian
+Server akan berjalan di http://127.0.0.1:8000.
 
-A. Melalui Unit Test:
+Cara Melakukan Pengujian:
+
+1. Melalui Unit Test:
 
 Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. pytest Semua tes harus PASS jika konfigurasi sudah benar.
 
-B. Melalui file index.html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap. Pastikan server API sedang berjalan.
+2. Melalui file index.html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap. Pastikan server API sedang berjalan.
 
-C. Melalui Swagger UIAnda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI.Buka browser dan kunjungi: http://127.0.0.1:8000/docs
+3. Melalui Swagger UIAnda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI.Buka browser dan kunjungi: http://127.0.0.1:8000/docs
