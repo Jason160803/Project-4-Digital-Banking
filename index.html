@@ -1,115 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Banking Test UI</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-        }
-        .card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        button.secondary {
-            background-color: #6c757d;
-        }
-        button.secondary:hover {
-            background-color: #5a6268;
-        }
-        button.refresh {
-            font-size: 12px;
-            padding: 5px 10px;
-            background-color: #28a745;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-        #response-area {
-            background-color: #2d2d2d;
-            color: #f4f4f4;
-            padding: 15px;
-            border-radius: 4px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: "Courier New", Courier, monospace;
-            min-height: 50px;
-        }
-        #account-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        #account-list li {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-        }
-        #account-list li:last-child {
-            border-bottom: none;
-        }
-        code {
-            background-color: #e9ecef;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
+        /* (CSS tidak berubah, disertakan untuk kelengkapan) */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; }
+        .card { background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 0; display: flex; justify-content: space-between; align-items: center; }
+        form { display: flex; flex-direction: column; gap: 15px; }
+        input[type="text"], input[type="password"], input[type="number"] { padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+        button { padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 5px; transition: background-color 0.2s; }
+        button:hover { background-color: #0056b3; }
+        button.secondary { background-color: #6c757d; }
+        button.secondary:hover { background-color: #5a6268; }
+        button.refresh { font-size: 12px; padding: 5px 10px; background-color: #28a745; }
+        button.delete-btn { font-size: 12px; padding: 4px 8px; background-color: #dc3545; margin-left: auto; }
+        button.delete-btn:hover { background-color: #c82333; }
+        .button-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        #response-area { background-color: #2d2d2d; color: #f4f4f4; padding: 15px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; font-family: "Courier New", Courier, monospace; min-height: 50px; }
+        #account-list { list-style-type: none; padding: 0; }
+        #account-list li { padding: 10px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+        #account-list li:last-child { border-bottom: none; }
+        code { background-color: #e9ecef; padding: 2px 4px; border-radius: 3px; cursor: pointer; }
+        .bank-name { color: #6c757d; font-size: 0.9em; display: block; }
+        .account-info { flex-grow: 1; }
+        #account-details-display { margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; line-height: 1.6; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Digital Banking Test Interface 🌐</h1>
-
+    
     <div class="card">
-        <h2>
-            <span>Daftar Akun yang Dibuat</span>
-            <button id="refresh-list-btn" class="refresh">Refresh List</button>
-        </h2>
-        <ul id="account-list"><li>Belum ada akun yang dibuat.</li></ul>
+        <h2><span>Daftar Akun</span><button id="refresh-list-btn" class="refresh">Refresh</button></h2>
+        <ul id="account-list"><li>Memuat...</li></ul>
     </div>
 
     <div class="card">
@@ -118,6 +46,7 @@
             <input type="text" id="create-name" placeholder="Nama Nasabah" required>
             <input type="text" id="create-bank" placeholder="Nama Bank" required>
             <input type="password" id="create-pin" placeholder="6-Digit PIN" required>
+            <input type="number" id="create-balance" placeholder="Saldo Awal (Minimal Rp 20.000)" required min="20000" step="any">
             <button type="submit">Buat Akun</button>
         </form>
     </div>
@@ -127,12 +56,12 @@
         <form id="info-form">
             <input type="text" id="info-account" placeholder="Salin Nomor Rekening dari daftar di atas" required>
             <div class="button-group">
-                <button type="submit" id="check-details-btn">Cek Saldo & Detail</button>
-                <button type="submit" id="check-history-btn" class="secondary">Lihat Riwayat Transaksi</button>
+                <button type="submit" id="check-details-btn">Cek Detail</button>
+                <button type="submit" id="check-history-btn" class="secondary">Riwayat Transaksi</button>
             </div>
         </form>
+        <div id="account-details-display"></div>
     </div>
-
     <div class="card">
         <h2>Nasabah: Lakukan Transaksi Keuangan</h2>
         <form id="transaction-form">
@@ -147,7 +76,6 @@
             </div>
         </form>
     </div>
-
     <div class="card">
         <h2>Respons dari API</h2>
         <pre id="response-area">Menunggu permintaan...</pre>
@@ -157,126 +85,169 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const baseUrl = 'http://127.0.0.1:8000';
+        // ... (semua variabel lain tetap sama)
         const responseArea = document.getElementById('response-area');
         const accountList = document.getElementById('account-list');
+        const accountDetailsDisplay = document.getElementById('account-details-display');
 
-        // --- FUNGSI BARU UNTUK MENGAMBIL DAN MENAMPILKAN DAFTAR AKUN ---
+        // --- UBAH EVENT LISTENER UNTUK FORM BUAT AKUN ---
+        document.getElementById('create-account-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            // Ambil nilai saldo awal, jika kosong anggap 0
+            const initialBalance = parseFloat(document.getElementById('create-balance').value);
+
+            
+            const body = {
+                name: document.getElementById('create-name').value,
+                bank_name: document.getElementById('create-bank').value,
+                pin: document.getElementById('create-pin').value,
+                initial_balance: initialBalance // Kirim saldo awal ke API
+            };
+
+            const success = await performFetch('/admin/accounts/', 'POST', body);
+            if (success) {
+                fetchAndDisplayAccounts();
+                document.getElementById('create-account-form').reset();
+            }
+        });
+
+        // Sisa kode JavaScript tidak perlu diubah karena sudah menangani error dengan baik
+        function formatToWIB(isoString) {
+            if (!isoString) return 'N/A';
+            const date = new Date(isoString);
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Jakarta' };
+            const formatter = new Intl.DateTimeFormat('en-GB', options);
+            const parts = formatter.formatToParts(date);
+            let day, month, year, hour, minute, second;
+            for (const part of parts) {
+                switch (part.type) {
+                    case 'day': day = part.value; break;
+                    case 'month': month = part.value; break;
+                    case 'year': year = part.value; break;
+                    case 'hour': hour = part.value; break;
+                    case 'minute': minute = part.value; break;
+                    case 'second': second = part.value; break;
+                }
+            }
+            return `${day}-${month}-${year}, ${hour}:${minute}:${second}`;
+        }
         async function fetchAndDisplayAccounts() {
             try {
                 const response = await fetch(`${baseUrl}/admin/accounts/`);
-                if (!response.ok) {
-                    accountList.innerHTML = '<li>Gagal memuat daftar akun.</li>';
-                    return;
-                }
+                if (!response.ok) { accountList.innerHTML = '<li>Gagal memuat daftar akun.</li>'; return; }
                 const accounts = await response.json();
-                
-                accountList.innerHTML = ''; // Kosongkan list sebelum diisi ulang
-                
+                accountList.innerHTML = '';
                 if (accounts.length === 0) {
                     accountList.innerHTML = '<li>Belum ada akun yang dibuat.</li>';
                 } else {
                     accounts.forEach(account => {
                         const listItem = document.createElement('li');
-                        listItem.innerHTML = `<strong>${account.name}</strong> - <code>${account.account_number}</code>`;
+                        listItem.innerHTML = `<div class="account-info"><strong>${account.name}</strong><span class="bank-name">${account.bank_name}</span><code title="Klik untuk menyalin">${account.account_number}</code></div>`;
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Hapus';
+                        deleteBtn.className = 'delete-btn';
+                        deleteBtn.dataset.accountNumber = account.account_number;
+                        listItem.appendChild(deleteBtn);
                         accountList.appendChild(listItem);
                     });
                 }
+            } catch (error) { accountList.innerHTML = `<li>Error: ${error.message}. Pastikan server API berjalan.</li>`; }
+        }
+        async function performFetch(endpoint, method, body = null, displayInResponseArea = true) {
+            if (displayInResponseArea) responseArea.textContent = 'Memproses...';
+            try {
+                const options = { method, headers: { 'Content-Type': 'application/json' } };
+                if (body) { options.body = JSON.stringify(body); }
+                const response = await fetch(baseUrl + endpoint, options);
+                const data = await response.json();
+                if (!response.ok) {
+                    if (displayInResponseArea) responseArea.textContent = `Error ${response.status}: ${JSON.stringify(data, null, 2)}`;
+                    return null;
+                } else {
+                    if (displayInResponseArea) responseArea.textContent = JSON.stringify(data, null, 2);
+                    return data;
+                }
             } catch (error) {
-                accountList.innerHTML = `<li>Error: ${error.message}</li>`;
+                if (displayInResponseArea) responseArea.textContent = `Terjadi Error Jaringan: ${error.message}`;
+                return null;
             }
         }
-        
-        // Panggil fungsi ini saat halaman pertama kali dimuat
         fetchAndDisplayAccounts();
-
-        // Tambahkan event listener untuk tombol refresh
         document.getElementById('refresh-list-btn').addEventListener('click', fetchAndDisplayAccounts);
-
-        // Event listener untuk form Buat Akun
-        document.getElementById('create-account-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const body = {
-                name: document.getElementById('create-name').value,
-                bank_name: document.getElementById('create-bank').value,
-                pin: document.getElementById('create-pin').value
-            };
-            const success = await performFetch('/admin/accounts/', 'POST', body);
-            // Jika berhasil membuat akun, refresh daftar akun
-            if (success) {
-                fetchAndDisplayAccounts();
-                document.getElementById('create-account-form').reset(); // Kosongkan form
+        accountList.addEventListener('click', async (event) => {
+            const target = event.target;
+            if (target.classList.contains('delete-btn')) {
+                const accountNumber = target.dataset.accountNumber;
+                if (confirm(`Anda yakin ingin MENGHAPUS akun ${accountNumber} secara permanen? Aksi ini tidak bisa dibatalkan.`)) {
+                    const success = await performFetch(`/admin/accounts/${accountNumber}/`, 'DELETE');
+                    if (success) { fetchAndDisplayAccounts(); }
+                }
+            }
+            if (target.tagName === 'CODE') {
+                navigator.clipboard.writeText(target.textContent).then(() => {
+                    alert(`Nomor rekening ${target.textContent} disalin ke clipboard.`);
+                });
             }
         });
-        
-        // Event listener untuk form Informasi
         document.getElementById('info-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const accountNumber = document.getElementById('info-account').value;
-            if (!accountNumber) {
-                responseArea.textContent = 'Nomor rekening harus diisi.';
-                return;
-            }
+            if (!accountNumber) { responseArea.textContent = 'Nomor rekening harus diisi.'; return; }
             const submitterId = event.submitter.id;
             if (submitterId === 'check-details-btn') {
-                await performFetch(`/accounts/${accountNumber}/details/`, 'GET');
+                const data = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
+                if (data) {
+                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${data.name}<br><strong>Saldo:</strong> Rp ${data.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${data.daily_transaction_count} / 15`;
+                    responseArea.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    accountDetailsDisplay.innerHTML = 'Gagal memuat detail.';
+                    responseArea.textContent = "Gagal memuat detail akun. Pastikan nomor rekening benar.";
+                }
             } else if (submitterId === 'check-history-btn') {
-                await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET');
+                accountDetailsDisplay.innerHTML = '';
+                const historyData = await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET', null, false);
+                if (historyData) {
+                    const formattedHistory = historyData.map(tx => ({ ...tx, timestamp: formatToWIB(tx.timestamp) }));
+                    responseArea.textContent = JSON.stringify(formattedHistory, null, 2);
+                } else {
+                    responseArea.textContent = "Gagal memuat riwayat transaksi.";
+                }
             }
         });
-
-        // Event listener untuk form Transaksi
         document.getElementById('transaction-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const accountNumber = document.getElementById('trans-account').value;
             const pin = document.getElementById('trans-pin').value;
             const amount = parseFloat(document.getElementById('trans-amount').value);
             const targetAccountNumber = document.getElementById('trans-target-account').value;
+            const timestamp = new Date().toISOString();
             const submitterId = event.submitter.id;
-
             let endpoint = '';
             let body = {};
-
             if (submitterId === 'deposit-btn' || submitterId === 'withdraw-btn') {
                 endpoint = `/accounts/${accountNumber}/${submitterId.replace('-btn', '')}/`;
-                body = { amount, pin };
+                body = { amount, pin, timestamp };
             } else if (submitterId === 'transfer-btn') {
-                if (!targetAccountNumber) {
-                    responseArea.textContent = 'Nomor rekening tujuan harus diisi untuk transfer.';
-                    return;
-                }
+                if (!targetAccountNumber) { responseArea.textContent = 'Nomor rekening tujuan harus diisi.'; return; }
                 endpoint = `/accounts/${accountNumber}/transfer/`;
-                body = { amount, pin, target_account_number: targetAccountNumber };
+                body = { amount, pin, target_account_number: targetAccountNumber, timestamp };
             }
-            
-            await performFetch(endpoint, 'POST', body);
+            const data = await performFetch(endpoint, 'POST', body);
+            if (data) {
+                responseArea.textContent = "Transaksi berhasil! Memuat data terbaru...";
+                const detailData = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
+                if (detailData) {
+                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${detailData.name}<br><strong>Saldo:</strong> Rp ${detailData.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${detailData.daily_transaction_count} / 15`;
+                    // Setelah transaksi sukses, bisa juga langsung tampilkan riwayat
+                     const historyData = await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET', null, false);
+                    if (historyData) {
+                        const formattedHistory = historyData.map(tx => ({ ...tx, timestamp: formatToWIB(tx.timestamp) }));
+                        responseArea.textContent = JSON.stringify(formattedHistory, null, 2);
+                    }
+                }
+            }
         });
-
-        // Fungsi umum untuk melakukan fetch ke API
-        async function performFetch(endpoint, method, body = null) {
-            responseArea.textContent = 'Memproses...';
-            try {
-                const options = {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' }
-                };
-                if (body) {
-                    options.body = JSON.stringify(body);
-                }
-                const response = await fetch(baseUrl + endpoint, options);
-                const data = await response.json();
-                
-                if (!response.ok) {
-                   responseArea.textContent = `Error ${response.status}: ${JSON.stringify(data, null, 2)}`;
-                   return false; // Tandai sebagai gagal
-                } else {
-                   responseArea.textContent = JSON.stringify(data, null, 2);
-                   return true; // Tandai sebagai sukses
-                }
-            } catch (error) {
-                responseArea.textContent = `Terjadi Error Jaringan: ${error.message}`;
-                return false;
-            }
-        }
     });
 </script>
 

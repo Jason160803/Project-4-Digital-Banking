@@ -1,18 +1,23 @@
 from pydantic import BaseModel, Field
+from . import config
 
 # Definisikan Regex di sini (di luar class) agar bisa diakses secara global di dalam file ini
 name_regex = r"^[a-zA-Z .]+$"
 pin_regex = r"^\d{6}$"
 
 class AccountCreate(BaseModel):
-    name: str = Field(
+    name: str = Field(..., min_length=3, pattern=name_regex)
+    bank_name: str = Field(...)
+    pin: str = Field(..., pattern=pin_regex)
+    # --- PERUBAHAN DI SINI ---
+    # Hapus nilai default `0.0` untuk membuatnya wajib
+    # Tambahkan `ge` (greater than or equal to) dengan nilai dari config
+    initial_balance: float = Field(
         ..., 
-        min_length=3, 
-        description="Customer's full name (letters, spaces, and dots only)",
-        pattern=name_regex # Sekarang variabel ini sudah dikenali
+        ge=config.MINIMUM_BALANCE, 
+        description=f"Initial balance must be at least Rp {config.MINIMUM_BALANCE}"
     )
-    bank_name: str = Field(..., description="Bank where the account is registered")
-    pin: str = Field(..., description="6-digit personal identification number", pattern=pin_regex)
+
 
 class AccountUpdate(BaseModel):
     name: str = Field(
@@ -23,13 +28,15 @@ class AccountUpdate(BaseModel):
     )
 
 class AuthorizedTransactionRequest(BaseModel):
-    amount: float = Field(..., gt=0, description="Transaction amount, must be positive")
-    pin: str = Field(..., description="Your 6-digit PIN for authorization")
+    amount: float = Field(..., gt=0)
+    pin: str
+    timestamp: str
 
 class AuthorizedTransferRequest(BaseModel):
-    amount: float = Field(..., gt=0, description="Transfer amount")
-    target_account_number: str = Field(..., description="The account number to transfer to")
-    pin: str = Field(..., description="Your 6-digit PIN for authorization")
+    amount: float = Field(..., gt=0)
+    target_account_number: str
+    pin: str
+    timestamp: str
 
 # Response Models (tidak perlu diubah, tapi disertakan untuk kelengkapan)
 class AccountInfoBase(BaseModel):
@@ -43,6 +50,7 @@ class AccountInfoAdmin(AccountInfoBase):
 
 class AccountInfoCustomer(AccountInfoBase):
     balance: float
+    daily_transaction_count: int
 
 class Transaction(BaseModel):
     type: str

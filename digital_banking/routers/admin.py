@@ -42,14 +42,10 @@ def update_account_info(account_number: str, account_update: models.AccountUpdat
     account['name'] = account_update.name
     return models.AccountInfoAdmin(account_number=account_number, **account)
 
+
 @router.delete("/accounts/{account_number}/", status_code=status.HTTP_200_OK)
-def deactivate_account(account_number: str):
+def delete_account(account_number: str): # Nama fungsi diubah agar lebih sesuai
     """
-    Admin: Deactivate an account. The account data is kept but marked as inactive.
+    Admin: Delete an account permanently.
     """
-    account = services.get_account_or_404(account_number)
-    if not account['is_active']:
-        return {"message": "Account already inactive"}
-        
-    account['is_active'] = False
-    return {"message": "Account deactivated successfully"}
+    return services.delete_account_permanently(account_number)
