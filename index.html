@@ -198,7 +198,7 @@
             if (submitterId === 'check-details-btn') {
                 const data = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
                 if (data) {
-                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${data.name}<br><strong>Saldo:</strong> Rp ${data.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${data.daily_transaction_count} / 15`;
+                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${data.name}<br><strong>Saldo:</strong> Rp ${data.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${data.daily_transaction_count} / 10`;
                     responseArea.textContent = JSON.stringify(data, null, 2);
                 } else {
                     accountDetailsDisplay.innerHTML = 'Gagal memuat detail.';
