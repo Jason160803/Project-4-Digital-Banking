@@ -2,7 +2,9 @@
 
 # Cara Menjalankan Proyek:
 
-1. Persiapan AwalPastikan Anda memiliki Python 3.8+ terinstal.# Clone repositori ini (jika belum)
+1. Persiapan Awal
+Pastikan Anda memiliki Python 3.8+ terinstal.# 
+Clone repositori ini:
 git clone [https://github.com/Jason160803/Project-4-Digital-Banking.git](https://github.com/Jason160803/Project-4-Digital-Banking.git)
 
 2. Setup Virtual EnvironmentSangat disarankan untuk menggunakan virtual environment agar dependensi proyek tidak tercampur
@@ -26,9 +28,9 @@ Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan 
 
 B. Melalui Antarmuka Web (UI)Proyek ini dilengkapi dengan index.
 html yang berfungsi sebagai antarmuka pengujian sederhana dan lengkap.Pastikan server API sedang berjalan.
-Buka file index.
-html langsung di browser Anda (cukup klik dua kali filenya).
+Buka file index.html.
 Gunakan formulir yang tersedia untuk berinteraksi dengan semua fitur API secara visual.
+
 C. Melalui Swagger UIAnda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI.Buka browser dan kunjungi: http://127.0.0.1:8000/docs
 
 
