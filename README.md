@@ -1,6 +1,6 @@
 # Project-4-Digital-Banking
 
-Cara Menjalankan Proyek:
+# Cara Menjalankan Proyek:
 
 1. Persiapan AwalPastikan Anda memiliki Python 3.8+ terinstal.# Clone repositori ini (jika belum)
 git clone [https://github.com/Jason160803/Project-4-Digital-Banking.git](https://github.com/Jason160803/Project-4-Digital-Banking.git)
@@ -10,12 +10,12 @@ Menggunakan PowerShell
 python -m venv venv
 
 # Aktivasi (Windows)
-.\venv\Scripts\activate
+3. .\venv\Scripts\activate
 
-3. Instal Dependensi
+4. Instal Dependensi
 Instal semua library yang dibutuhkan dengan satu perintah.pip install -r requirements.txt
 
-4. Jalankan Server APIJalankan server Uvicorn dari direktori utama proyek.uvicorn digital_banking.main:app --reload
+5. Jalankan Server APIJalankan server Uvicorn dari direktori utama proyek.uvicorn digital_banking.main:app --reload
 Server akan berjalan di http://127.0.0.1:8000.Cara Melakukan Pengujian
 A. Melalui Unit TestJalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar.pytest
 Semua tes harus PASS jika konfigurasi sudah benar.
