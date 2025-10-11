@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Banking Test UI</title>
     <style>
-        /* (CSS tidak berubah, disertakan untuk kelengkapan) */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 600px; }
         .card { background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -28,6 +27,12 @@
         .bank-name { color: #6c757d; font-size: 0.9em; display: block; }
         .account-info { flex-grow: 1; }
         #account-details-display { margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; line-height: 1.6; }
+        
+        /* Gaya untuk tombol navigasi dan view */
+        .view-switcher { display: flex; gap: 10px; margin-bottom: 20px; }
+        .view-switcher button { flex-grow: 1; background-color: #6c757d; }
+        .view-switcher button.active { background-color: #007bff; }
+        .view { display: none; } /* Sembunyikan semua view secara default */
     </style>
 </head>
 <body>
@@ -35,47 +40,56 @@
 <div class="container">
     <h1>Digital Banking Test Interface 🌐</h1>
     
-    <div class="card">
-        <h2><span>Daftar Akun</span><button id="refresh-list-btn" class="refresh">Refresh</button></h2>
-        <ul id="account-list"><li>Memuat...</li></ul>
+    <div class="view-switcher">
+        <button id="show-admin-view" class="active">Tampilan Admin</button>
+        <button id="show-customer-view">Tampilan Nasabah</button>
     </div>
 
-    <div class="card">
-        <h2>Admin: Buat Akun Baru</h2>
-        <form id="create-account-form">
-            <input type="text" id="create-name" placeholder="Nama Nasabah" required>
-            <input type="text" id="create-bank" placeholder="Nama Bank" required>
-            <input type="password" id="create-pin" placeholder="6-Digit PIN" required>
-            <input type="number" id="create-balance" placeholder="Saldo Awal (Minimal 20.000)" required min="20000" step="any">
-            <button type="submit">Buat Akun</button>
-        </form>
+    <div id="admin-view" class="view" style="display: block;">
+        <div class="card">
+            <h2><span>Daftar Akun</span><button id="refresh-list-btn" class="refresh">Refresh</button></h2>
+            <ul id="account-list"><li>Memuat...</li></ul>
+        </div>
+        <div class="card">
+            <h2>Admin: Buat Akun Baru</h2>
+            <form id="create-account-form">
+                <input type="text" id="create-name" placeholder="Nama Nasabah" required>
+                <input type="text" id="create-bank" placeholder="Nama Bank" required>
+                <input type="password" id="create-pin" placeholder="6-Digit PIN" required>
+                <input type="number" id="create-balance" placeholder="Saldo Awal (Minimal 20.000)" required min="20000" step="any">
+                <button type="submit">Buat Akun</button>
+            </form>
+        </div>
     </div>
 
-    <div class="card">
-        <h2>Nasabah: Cek Informasi Akun</h2>
-        <form id="info-form">
-            <input type="text" id="info-account" placeholder="Salin Nomor Rekening dari daftar di atas" required>
-            <div class="button-group">
-                <button type="submit" id="check-details-btn">Cek Detail</button>
-                <button type="submit" id="check-history-btn" class="secondary">Riwayat Transaksi</button>
-            </div>
-        </form>
-        <div id="account-details-display"></div>
+    <div id="customer-view" class="view">
+        <div class="card">
+            <h2>Nasabah: Cek Informasi Akun</h2>
+            <form id="info-form">
+                <input type="text" id="info-account" placeholder="Salin Nomor Rekening dari Tampilan Admin" required>
+                <div class="button-group">
+                    <button type="submit" id="check-details-btn">Cek Detail</button>
+                    <button type="submit" id="check-history-btn" class="secondary">Riwayat Transaksi</button>
+                </div>
+            </form>
+            <div id="account-details-display"></div>
+        </div>
+        <div class="card">
+            <h2>Nasabah: Lakukan Transaksi Keuangan</h2>
+            <form id="transaction-form">
+                <input type="text" id="trans-account" placeholder="Nomor Rekening Sumber" required>
+                <input type="password" id="trans-pin" placeholder="6-Digit PIN Anda" required>
+                <input type="number" id="trans-amount" placeholder="Jumlah (Amount)" required>
+                <input type="text" id="trans-target-account" placeholder="Nomor Rekening Tujuan (untuk transfer)">
+                <div class="button-group">
+                    <button type="submit" id="deposit-btn">💰 Deposit</button>
+                    <button type="submit" id="withdraw-btn" class="secondary">💸 Tarik Tunai</button>
+                    <button type="submit" id="transfer-btn">➡️ Transfer</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="card">
-        <h2>Nasabah: Lakukan Transaksi Keuangan</h2>
-        <form id="transaction-form">
-            <input type="text" id="trans-account" placeholder="Nomor Rekening Sumber" required>
-            <input type="password" id="trans-pin" placeholder="6-Digit PIN Anda" required>
-            <input type="number" id="trans-amount" placeholder="Jumlah (Amount)" required>
-            <input type="text" id="trans-target-account" placeholder="Nomor Rekening Tujuan (untuk transfer)">
-            <div class="button-group">
-                <button type="submit" id="deposit-btn">💰 Deposit</button>
-                <button type="submit" id="withdraw-btn" class="secondary">💸 Tarik Tunai</button>
-                <button type="submit" id="transfer-btn">➡️ Transfer</button>
-            </div>
-        </form>
-    </div>
+
     <div class="card">
         <h2>Respons dari API</h2>
         <pre id="response-area">Menunggu permintaan...</pre>
@@ -85,34 +99,31 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const baseUrl = 'http://127.0.0.1:8000';
-        // ... (semua variabel lain tetap sama)
         const responseArea = document.getElementById('response-area');
         const accountList = document.getElementById('account-list');
         const accountDetailsDisplay = document.getElementById('account-details-display');
 
-        // --- UBAH EVENT LISTENER UNTUK FORM BUAT AKUN ---
-        document.getElementById('create-account-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            
-            // Ambil nilai saldo awal, jika kosong anggap 0
-            const initialBalance = parseFloat(document.getElementById('create-balance').value);
+        // --- LOGIKA BARU UNTUK MENGGANTI TAMPILAN ---
+        const adminView = document.getElementById('admin-view');
+        const customerView = document.getElementById('customer-view');
+        const showAdminBtn = document.getElementById('show-admin-view');
+        const showCustomerBtn = document.getElementById('show-customer-view');
 
-            
-            const body = {
-                name: document.getElementById('create-name').value,
-                bank_name: document.getElementById('create-bank').value,
-                pin: document.getElementById('create-pin').value,
-                initial_balance: initialBalance // Kirim saldo awal ke API
-            };
-
-            const success = await performFetch('/admin/accounts/', 'POST', body);
-            if (success) {
-                fetchAndDisplayAccounts();
-                document.getElementById('create-account-form').reset();
-            }
+        showAdminBtn.addEventListener('click', () => {
+            adminView.style.display = 'block';
+            customerView.style.display = 'none';
+            showAdminBtn.classList.add('active');
+            showCustomerBtn.classList.remove('active');
         });
 
-        // Sisa kode JavaScript tidak perlu diubah karena sudah menangani error dengan baik
+        showCustomerBtn.addEventListener('click', () => {
+            adminView.style.display = 'none';
+            customerView.style.display = 'block';
+            showCustomerBtn.classList.add('active');
+            showAdminBtn.classList.remove('active');
+        });
+
+        // Sisa kode JavaScript lainnya tidak berubah, hanya disalin kembali
         function formatToWIB(isoString) {
             if (!isoString) return 'N/A';
             const date = new Date(isoString);
@@ -190,6 +201,21 @@
                 });
             }
         });
+        document.getElementById('create-account-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const initialBalance = parseFloat(document.getElementById('create-balance').value);
+            const body = {
+                name: document.getElementById('create-name').value,
+                bank_name: document.getElementById('create-bank').value,
+                pin: document.getElementById('create-pin').value,
+                initial_balance: initialBalance
+            };
+            const success = await performFetch('/admin/accounts/', 'POST', body);
+            if (success) {
+                fetchAndDisplayAccounts();
+                document.getElementById('create-account-form').reset();
+            }
+        });
         document.getElementById('info-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const accountNumber = document.getElementById('info-account').value;
@@ -239,7 +265,6 @@
                 const detailData = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
                 if (detailData) {
                     accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${detailData.name}<br><strong>Saldo:</strong> Rp ${detailData.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${detailData.daily_transaction_count} / 10`;
-                    // Setelah transaksi sukses, bisa juga langsung tampilkan riwayat
                      const historyData = await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET', null, false);
                     if (historyData) {
                         const formattedHistory = historyData.map(tx => ({ ...tx, timestamp: formatToWIB(tx.timestamp) }));
