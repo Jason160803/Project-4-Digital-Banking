@@ -62,11 +62,6 @@ Semua pengaturan utama untuk aplikasi ini dapat ditemukan dalam file `digital_ba
 
     Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. `pytest` Semua tes harus PASS jika konfigurasi sudah benar.
 
-2.  **Melalui file index.html**
-
-    File ini berfungsi sebagai antarmuka pengujian sederhana dan lengkap. Pastikan server API sedang berjalan.
-
-
 
 2. **Melalui Antarmuka Web (UI)** 
 
