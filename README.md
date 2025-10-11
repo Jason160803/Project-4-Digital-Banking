@@ -58,12 +58,12 @@ Semua pengaturan utama untuk aplikasi ini dapat ditemukan dalam file `digital_ba
 
 ## Cara Melakukan Pengujian:
 
-1.  **Melalui Unit Test**
+A.  **Melalui Unit Test**
 
     Jalankan semua tes otomatis untuk memastikan fungsionalitas API berjalan dengan benar. `pytest` Semua tes harus PASS jika konfigurasi sudah benar.
 
 
-2. **Melalui Antarmuka Web (UI)** 
+B. **Melalui Antarmuka Web (UI)** 
 
     Proyek ini dilengkapi dengan `index.html` yang berfungsi sebagai UI. Cara menjalankannya adalah sebagai berikut:
 
@@ -75,6 +75,6 @@ Semua pengaturan utama untuk aplikasi ini dapat ditemukan dalam file `digital_ba
       ```
     4. Buka browser dan kunjungi `http://localhost:8001`. Anda akan melihat antarmuka web untuk menguji API.
 
-3.  **Melalui Swagger UI**
+C.  **Melalui Swagger UI**
 
     Anda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI. Buka browser dan kunjungi: http://127.0.0.1:8000/docs
