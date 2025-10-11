@@ -44,7 +44,7 @@
 
 ## Fitur dan Konfigurasi
 
-Semua pengaturan utama untuk aplikasi ini dapat ditemukan dan diubah dalam file `digital_banking/config.py`.
+Semua pengaturan utama untuk aplikasi ini dapat ditemukan dalam file `digital_banking/config.py`.
 
 | Konfigurasi                 | Nilai             | Deskripsi                                                                 |
 | --------------------------- | ----------------- | ------------------------------------------------------------------------- |
