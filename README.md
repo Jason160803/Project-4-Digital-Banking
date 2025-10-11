@@ -66,6 +66,20 @@ Semua pengaturan utama untuk aplikasi ini dapat ditemukan dalam file `digital_ba
 
     File ini berfungsi sebagai antarmuka pengujian sederhana dan lengkap. Pastikan server API sedang berjalan.
 
+
+
+2. Melalui Antarmuka Web (UI)
+
+Proyek ini dilengkapi dengan `index.html` yang berfungsi sebagai UI. Cara menjalankannya adalah sebagai berikut:
+
+1.  **Pastikan Server API (Backend) Anda tetap berjalan** di satu terminal pada port `8000`.
+2.  **Buka Terminal Baru**, masuk ke direktori proyek, dan aktifkan *virtual environment*.
+3.  Di terminal kedua ini, jalankan perintah berikut untuk menyajikan file `index.html`:
+    ```bash
+    python -m http.server 8001
+    ```
+4.  Buka browser dan kunjungi `http://localhost:8001`. Anda akan melihat antarmuka web untuk menguji API.
+
 3.  **Melalui Swagger UI**
 
     Anda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI. Buka browser dan kunjungi: http://127.0.0.1:8000/docs
