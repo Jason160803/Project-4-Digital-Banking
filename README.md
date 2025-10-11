@@ -46,7 +46,7 @@
 
 Semua pengaturan utama untuk aplikasi ini dapat ditemukan dan diubah dalam file `digital_banking/config.py`.
 
-| Konfigurasi                 | Nilai Default     | Deskripsi                                                                 |
+| Konfigurasi                 | Nilai             | Deskripsi                                                                 |
 | --------------------------- | ----------------- | ------------------------------------------------------------------------- |
 | `MINIMUM_BALANCE`           | `20000.0`         | Saldo minimum yang harus tersisa di akun setelah penarikan atau transfer. |
 | `INTER_BANK_TRANSFER_FEE`   | `5000.0`          | Biaya yang dikenakan untuk setiap transfer antar bank.                      |
