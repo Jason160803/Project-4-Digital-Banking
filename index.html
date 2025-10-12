@@ -27,12 +27,10 @@
         .bank-name { color: #6c757d; font-size: 0.9em; display: block; }
         .account-info { flex-grow: 1; }
         #account-details-display { margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; line-height: 1.6; }
-        
-        /* Gaya untuk tombol navigasi dan view */
         .view-switcher { display: flex; gap: 10px; margin-bottom: 20px; }
         .view-switcher button { flex-grow: 1; background-color: #6c757d; }
         .view-switcher button.active { background-color: #007bff; }
-        .view { display: none; } /* Sembunyikan semua view secara default */
+        .view { display: none; }
     </style>
 </head>
 <body>
@@ -56,7 +54,7 @@
                 <input type="text" id="create-name" placeholder="Nama Nasabah" required>
                 <input type="text" id="create-bank" placeholder="Nama Bank" required>
                 <input type="password" id="create-pin" placeholder="6-Digit PIN" required>
-                <input type="number" id="create-balance" placeholder="Saldo Awal (Minimal 20.000)" required min="20000" step="any">
+                <input type="number" id="create-balance" placeholder="Saldo Awal" required step="any">
                 <button type="submit">Buat Akun</button>
             </form>
         </div>
@@ -66,7 +64,7 @@
         <div class="card">
             <h2>Nasabah: Cek Informasi Akun</h2>
             <form id="info-form">
-                <input type="text" id="info-account" placeholder="Salin Nomor Rekening dari Tampilan Admin" required>
+                <input type="text" id="info-account" placeholder="Salin Nomor Rekening" required>
                 <div class="button-group">
                     <button type="submit" id="check-details-btn">Cek Detail</button>
                     <button type="submit" id="check-history-btn" class="secondary">Riwayat Transaksi</button>
@@ -103,7 +101,29 @@
         const accountList = document.getElementById('account-list');
         const accountDetailsDisplay = document.getElementById('account-details-display');
 
-        // --- LOGIKA BARU UNTUK MENGGANTI TAMPILAN ---
+        let appConfig = {
+            daily_transaction_limit: 10,
+            minimum_balance: 20000,
+            max_transfer_amount: 25000000
+        };
+
+        async function fetchAndApplyConfig() {
+            try {
+                const response = await fetch(`${baseUrl}/config/`);
+                const configData = await response.json();
+                if (configData) {
+                    appConfig = configData;
+                    const createBalanceInput = document.getElementById('create-balance');
+                    createBalanceInput.placeholder = `Saldo Awal (Minimal Rp ${appConfig.minimum_balance.toLocaleString('id-ID')})`;
+                    createBalanceInput.min = appConfig.minimum_balance;
+                    const transAmountInput = document.getElementById('trans-amount');
+                    transAmountInput.max = appConfig.max_transfer_amount;
+                }
+            } catch (error) {
+                console.error("Gagal mengambil konfigurasi:", error);
+            }
+        }
+
         const adminView = document.getElementById('admin-view');
         const customerView = document.getElementById('customer-view');
         const showAdminBtn = document.getElementById('show-admin-view');
@@ -123,7 +143,6 @@
             showAdminBtn.classList.remove('active');
         });
 
-        // Sisa kode JavaScript lainnya tidak berubah, hanya disalin kembali
         function formatToWIB(isoString) {
             if (!isoString) return 'N/A';
             const date = new Date(isoString);
@@ -143,6 +162,7 @@
             }
             return `${day}-${month}-${year}, ${hour}:${minute}:${second}`;
         }
+        
         async function fetchAndDisplayAccounts() {
             try {
                 const response = await fetch(`${baseUrl}/admin/accounts/`);
@@ -165,6 +185,7 @@
                 }
             } catch (error) { accountList.innerHTML = `<li>Error: ${error.message}. Pastikan server API berjalan.</li>`; }
         }
+        
         async function performFetch(endpoint, method, body = null, displayInResponseArea = true) {
             if (displayInResponseArea) responseArea.textContent = 'Memproses...';
             try {
@@ -184,8 +205,16 @@
                 return null;
             }
         }
-        fetchAndDisplayAccounts();
+
+        async function initializeApp() {
+            await fetchAndApplyConfig();
+            fetchAndDisplayAccounts();
+        }
+
+        initializeApp();
+
         document.getElementById('refresh-list-btn').addEventListener('click', fetchAndDisplayAccounts);
+        
         accountList.addEventListener('click', async (event) => {
             const target = event.target;
             if (target.classList.contains('delete-btn')) {
@@ -201,6 +230,7 @@
                 });
             }
         });
+
         document.getElementById('create-account-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const initialBalance = parseFloat(document.getElementById('create-balance').value);
@@ -216,6 +246,7 @@
                 document.getElementById('create-account-form').reset();
             }
         });
+
         document.getElementById('info-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const accountNumber = document.getElementById('info-account').value;
@@ -224,7 +255,7 @@
             if (submitterId === 'check-details-btn') {
                 const data = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
                 if (data) {
-                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${data.name}<br><strong>Saldo:</strong> Rp ${data.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${data.daily_transaction_count} / 10`;
+                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${data.name}<br><strong>Saldo:</strong> Rp ${data.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${data.daily_transaction_count} / ${appConfig.daily_transaction_limit}`;
                     responseArea.textContent = JSON.stringify(data, null, 2);
                 } else {
                     accountDetailsDisplay.innerHTML = 'Gagal memuat detail.';
@@ -241,6 +272,7 @@
                 }
             }
         });
+
         document.getElementById('transaction-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const accountNumber = document.getElementById('trans-account').value;
@@ -259,13 +291,12 @@
                 endpoint = `/accounts/${accountNumber}/transfer/`;
                 body = { amount, pin, target_account_number: targetAccountNumber, timestamp };
             }
-            const data = await performFetch(endpoint, 'POST', body);
-            if (data) {
-                responseArea.textContent = "Transaksi berhasil! Memuat data terbaru...";
+            const success = await performFetch(endpoint, 'POST', body);
+            if (success) {
                 const detailData = await performFetch(`/accounts/${accountNumber}/details/`, 'GET', null, false);
                 if (detailData) {
-                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${detailData.name}<br><strong>Saldo:</strong> Rp ${detailData.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${detailData.daily_transaction_count} / 10`;
-                     const historyData = await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET', null, false);
+                    accountDetailsDisplay.innerHTML = `<strong>Nama:</strong> ${detailData.name}<br><strong>Saldo:</strong> Rp ${detailData.balance.toLocaleString('id-ID')}<br><strong>Transaksi Hari Ini:</strong> ${detailData.daily_transaction_count} / ${appConfig.daily_transaction_limit}`;
+                    const historyData = await performFetch(`/accounts/${accountNumber}/transactions/`, 'GET', null, false);
                     if (historyData) {
                         const formattedHistory = historyData.map(tx => ({ ...tx, timestamp: formatToWIB(tx.timestamp) }));
                         responseArea.textContent = JSON.stringify(formattedHistory, null, 2);
