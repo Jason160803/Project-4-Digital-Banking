@@ -31,7 +31,7 @@ def test_withdraw_success():
     assert response.json()["balance"] == 80000.0
 
 def test_withdraw_insufficient_balance_for_minimum():
-    response = client.post("/accounts/1111111111/withdraw/", json={"amount": 90001, "pin": "111111", "timestamp": current_timestamp})
+    response = client.post("/accounts/1111111111/withdraw/", json={"amount": 100001-config.MINIMUM_BALANCE, "pin": "111111", "timestamp": current_timestamp})
     assert response.status_code == 400
 
 def test_transfer_inter_bank_success():
