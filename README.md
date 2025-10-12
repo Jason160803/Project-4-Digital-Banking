@@ -44,15 +44,15 @@
 
 ## Fitur dan Konfigurasi
 
-Semua pengaturan utama untuk aplikasi ini dapat ditemukan dalam file `digital_banking/config.py`.
+Semua pengaturan utama untuk aplikasi ini dapat ditemukan dan diubah dalam file `digital_banking/config.py`.
 
 | Konfigurasi                 | Nilai             | Deskripsi                                                                 |
 | --------------------------- | ----------------- | ------------------------------------------------------------------------- |
-| `MINIMUM_BALANCE`           | `20000.0`         | Saldo minimum yang harus tersisa di akun setelah penarikan atau transfer. |
-| `INTER_BANK_TRANSFER_FEE`   | `5000.0`          | Biaya yang dikenakan untuk setiap transfer antar bank.                      |
-| `MAX_TRANSFER_AMOUNT`       | `25000000.0`      | Jumlah maksimum yang dapat ditransfer dalam satu transaksi.               |
-| `DAILY_TRANSACTION_LIMIT`   | `10`              | Batas jumlah transaksi harian per akun.                                   |
-| `LOCAL_BANK_NAME`           | "Bank Digital API"| Nama bank lokal yang digunakan untuk menentukan biaya transfer.            |
+| `MINIMUM_BALANCE`           | `10000`           | Saldo minimum yang harus tersisa di akun setelah penarikan atau transfer. |
+| `INTER_BANK_TRANSFER_FEE`   | `2000`            | Biaya yang dikenakan untuk setiap transfer antar bank.                    |
+| `MAX_TRANSFER_AMOUNT`       | `20000000`        | Jumlah maksimum yang dapat ditransfer dalam satu transaksi.               |
+| `DAILY_TRANSACTION_LIMIT`   | `25`              | Batas jumlah transaksi harian per akun.                                   |
+| `LOCAL_BANK_NAME`           | "Bank Digital API"| Nama bank lokal yang digunakan untuk menentukan biaya transfer.          |
 
 ---
 
