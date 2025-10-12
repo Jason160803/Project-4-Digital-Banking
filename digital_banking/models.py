@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from . import config
 
-# Definisikan Regex di sini (di luar class) agar bisa diakses secara global di dalam file ini
 name_regex = r"^[a-zA-Z .]+$"
 pin_regex = r"^\d{6}$"
 
@@ -9,9 +8,7 @@ class AccountCreate(BaseModel):
     name: str = Field(..., min_length=3, pattern=name_regex)
     bank_name: str = Field(...)
     pin: str = Field(..., pattern=pin_regex)
-    # --- PERUBAHAN DI SINI ---
-    # Hapus nilai default `0.0` untuk membuatnya wajib
-    # Tambahkan `ge` (greater than or equal to) dengan nilai dari config
+
     initial_balance: float = Field(
         ..., 
         ge=config.MINIMUM_BALANCE, 
@@ -38,7 +35,6 @@ class AuthorizedTransferRequest(BaseModel):
     pin: str
     timestamp: str
 
-# Response Models (tidak perlu diubah, tapi disertakan untuk kelengkapan)
 class AccountInfoBase(BaseModel):
     account_number: str
     name: str

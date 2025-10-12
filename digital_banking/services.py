@@ -23,7 +23,6 @@ def _log_transaction(account_number: str, type: str, amount: float, description:
         db.transactions_db[account_number] = []
     db.transactions_db[account_number].append(transaction)
     
-    # --- PERUBAHAN DI SINI: Kembalikan baris ini untuk menghitung semua transaksi ---
     db.accounts_db[account_number]['daily_transaction_count'] += 1
 
 def get_account_or_404(account_number: str):
@@ -62,7 +61,6 @@ def process_deposit(account_number: str, amount: float, pin: str, timestamp: Opt
     account = get_account_or_404(account_number)
     validate_pin(account, pin)
     validate_active_account(account)
-    # --- PERUBAHAN DI SINI: Tambahkan validasi limit ---
     validate_daily_transaction_limit(account_number)
     
     account['balance'] += amount
@@ -73,7 +71,6 @@ def process_withdrawal(account_number: str, amount: float, pin: str, timestamp: 
     account = get_account_or_404(account_number)
     validate_pin(account, pin)
     validate_active_account(account)
-    # --- PERUBAHAN DI SINI: Tambahkan kembali validasi limit ---
     validate_daily_transaction_limit(account_number)
     
     if account['balance'] - amount < config.MINIMUM_BALANCE:
@@ -112,9 +109,6 @@ def process_transfer(sender_acc_num: str, target_acc_num: str, amount: float, pi
     _log_transaction(sender_acc_num, "TRANSFER_OUT", amount, f"Transferred {amount:,.2f} to {target_acc_num}. Fee: {fee:,.2f}", timestamp=timestamp)
     _log_transaction(target_acc_num, "TRANSFER_IN", amount, f"Received {amount:,.2f} from {sender_acc_num}.", timestamp=timestamp)
     
-    # --- PERUBAHAN DI SINI: Hapus baris ini karena sudah ditangani oleh _log_transaction ---
-    # sender_account['daily_transaction_count'] += 1
-
     return {"message": "Transfer successful", "fee": fee}
 
 def delete_account_permanently(account_number: str):

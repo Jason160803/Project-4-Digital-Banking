@@ -10,7 +10,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Menambahkan middleware untuk CORS
 origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
@@ -20,7 +19,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- PERBARUI BAGIAN INI ---
 class AppConfig(BaseModel):
     daily_transaction_limit: int
     minimum_balance: float
@@ -36,7 +34,6 @@ def get_app_config():
         "max_transfer_amount": config.MAX_TRANSFER_AMOUNT,
         "inter_bank_transfer_fee": config.INTER_BANK_TRANSFER_FEE,
     }
-# --- AKHIR PERUBAHAN ---
 
 # Include routers
 app.include_router(admin.router)

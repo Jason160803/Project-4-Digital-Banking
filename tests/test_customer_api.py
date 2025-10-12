@@ -6,7 +6,7 @@ from digital_banking.models import AccountCreate
 
 client = TestClient(app)
 
-# Dapatkan timestamp saat ini untuk digunakan di semua tes
+#  Timestamp untuk digunakan di semua tes
 current_timestamp = "2025-10-10T12:00:00"
 
 def setup_function():

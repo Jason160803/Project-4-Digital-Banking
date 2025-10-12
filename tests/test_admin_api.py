@@ -28,13 +28,13 @@ def test_update_account_info():
     assert response.status_code == 200
     assert response.json()["name"] == "Joko Susilo"
 
-def test_delete_account(): # Nama fungsi & logika tes diubah
+def test_delete_account(): 
     res_create = client.post("/admin/accounts/", json={"name": "Eka", "bank_name": "Bank D", "pin": "444444", "initial_balance": 20000})
     acc_num = res_create.json()["account_number"]
     assert acc_num in accounts_db
     response = client.delete(f"/admin/accounts/{acc_num}/")
     assert response.status_code == 200
-    assert acc_num not in accounts_db # Pastikan akun benar-benar hilang
+    assert acc_num not in accounts_db 
 
 def test_admin_get_all_accounts_hides_balance():
     response_create = client.post("/admin/accounts/", json={"name": "Nasabah Rahasia", "bank_name": "Bank Aman", "pin": "555555", "initial_balance": 100000})

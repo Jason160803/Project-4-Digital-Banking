@@ -25,7 +25,6 @@ def deposit(req: models.AuthorizedTransactionRequest, account_number: str = Path
 
 @router.post("/withdraw/", response_model=models.AccountInfoCustomer)
 def withdraw(req: models.AuthorizedTransactionRequest, account_number: str = Path(..., description="The account number to withdraw from")):
-    # --- PERUBAHAN DI SINI: Tambahkan req.timestamp ---
     updated_account = services.process_withdrawal(account_number, req.amount, req.pin, req.timestamp)
     response_account = updated_account.copy()
     response_account.pop('pin', None)
@@ -33,7 +32,6 @@ def withdraw(req: models.AuthorizedTransactionRequest, account_number: str = Pat
 
 @router.post("/transfer/")
 def transfer(req: models.AuthorizedTransferRequest, account_number: str = Path(..., description="The sender's account number")):
-    # --- PERUBAHAN DI SINI: Tambahkan req.timestamp ---
     result = services.process_transfer(account_number, req.target_account_number, req.amount, req.pin, req.timestamp)
     return result
 

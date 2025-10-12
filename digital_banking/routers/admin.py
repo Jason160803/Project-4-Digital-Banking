@@ -14,7 +14,6 @@ def create_account(account_create: models.AccountCreate):
     """
     Admin: Create a new customer account.
     """
-    # Langsung kirim objek 'account_create' tanpa mengubahnya ke dict
     new_account = services.create_new_account(account_create)
     return new_account
 
@@ -44,7 +43,7 @@ def update_account_info(account_number: str, account_update: models.AccountUpdat
 
 
 @router.delete("/accounts/{account_number}/", status_code=status.HTTP_200_OK)
-def delete_account(account_number: str): # Nama fungsi diubah agar lebih sesuai
+def delete_account(account_number: str): 
     """
     Admin: Delete an account permanently.
     """
