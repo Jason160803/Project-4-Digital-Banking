@@ -52,7 +52,7 @@ Semua pengaturan utama untuk aplikasi ini dapat ditemukan dan diubah dalam file 
 | `INTER_BANK_TRANSFER_FEE`   | `2000`            | Biaya yang dikenakan untuk setiap transfer antar bank.                    |
 | `MAX_TRANSFER_AMOUNT`       | `20000000`        | Jumlah maksimum yang dapat ditransfer dalam satu transaksi.               |
 | `DAILY_TRANSACTION_LIMIT`   | `25`              | Batas jumlah transaksi harian per akun.                                   |
-| `LOCAL_BANK_NAME`           | "Bank Digital API"| Nama bank lokal yang digunakan untuk menentukan biaya transfer.          |
+| `LOCAL_BANK_NAME`           | "Bank Digital API"| Nama bank lokal yang digunakan untuk menentukan biaya transfer.           |
 
 ---
 
