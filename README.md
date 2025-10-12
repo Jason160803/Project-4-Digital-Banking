@@ -73,8 +73,9 @@ Semua pengaturan utama untuk aplikasi ini dapat ditemukan dan diubah dalam file 
       ```bash
       python -m http.server 8001
       ```
-   4. Buka browser dan kunjungi `http://localhost:8001`. Anda akan melihat antarmuka web untuk menguji API.
+   4. Buka browser dan kunjungi http://localhost:8001. Anda akan melihat antarmuka web untuk menguji API.
 
 3. **Melalui Swagger UI**
 
    Anda juga dapat mengakses dokumentasi API interaktif yang dibuat otomatis oleh FastAPI. Buka browser dan kunjungi: http://127.0.0.1:8000/docs
+
