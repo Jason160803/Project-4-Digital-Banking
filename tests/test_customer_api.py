@@ -31,6 +31,7 @@ def test_withdraw_success():
     assert response.json()["balance"] == 80000.0
 
 def test_withdraw_insufficient_balance_for_minimum():
+     # Awal balance= 100000, Tarik 1 rupiah lebih banyak dari itu untuk memastikan tes gagal.
     response = client.post("/accounts/1111111111/withdraw/", json={"amount": 100001-config.MINIMUM_BALANCE, "pin": "111111", "timestamp": current_timestamp})
     assert response.status_code == 400
 
