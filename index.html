@@ -16,8 +16,19 @@
         button.secondary { background-color: #6c757d; }
         button.secondary:hover { background-color: #5a6268; }
         button.refresh { font-size: 12px; padding: 5px 10px; background-color: #28a745; }
-        button.delete-btn { font-size: 12px; padding: 4px 8px; background-color: #dc3545; margin-left: auto; }
-        button.delete-btn:hover { background-color: #c82333; }
+        
+        /* Grup tombol aksi di daftar akun */
+        .action-buttons { margin-left: auto; display: flex; gap: 8px; }
+
+        /* Gaya untuk tombol Hapus dan Ubah Nama */
+        .update-btn, .delete-btn { font-size: 12px; padding: 4px 8px; }
+        .delete-btn { background-color: #dc3545; }
+        .delete-btn:hover { background-color: #c82333; }
+        
+        /* BARU: CSS untuk Tombol Ubah Nama */
+        .update-btn { background-color: #17a2b8; }
+        .update-btn:hover { background-color: #138496; }
+
         .button-group { display: flex; gap: 10px; flex-wrap: wrap; }
         #response-area { background-color: #2d2d2d; color: #f4f4f4; padding: 15px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; font-family: "Courier New", Courier, monospace; min-height: 50px; }
         #account-list { list-style-type: none; padding: 0; }
@@ -102,9 +113,9 @@
         const accountDetailsDisplay = document.getElementById('account-details-display');
 
         let appConfig = {
-            daily_transaction_limit: 25,
-            minimum_balance: 10000,
-            max_transfer_amount: 20000000
+            daily_transaction_limit: 10,
+            minimum_balance: 20000,
+            max_transfer_amount: 25000000
         };
 
         async function fetchAndApplyConfig() {
@@ -174,12 +185,29 @@
                 } else {
                     accounts.forEach(account => {
                         const listItem = document.createElement('li');
-                        listItem.innerHTML = `<div class="account-info"><strong>${account.name}</strong><span class="bank-name">${account.bank_name}</span><code title="Klik untuk menyalin">${account.account_number}</code></div>`;
+                        
+                        // BARU: Buat elemen untuk tombol Ubah Nama
+                        const updateBtn = document.createElement('button');
+                        updateBtn.textContent = 'Ubah Nama';
+                        updateBtn.className = 'update-btn';
+                        updateBtn.dataset.accountNumber = account.account_number;
+                        updateBtn.dataset.currentName = account.name; // Simpan nama saat ini
+
                         const deleteBtn = document.createElement('button');
                         deleteBtn.textContent = 'Hapus';
                         deleteBtn.className = 'delete-btn';
                         deleteBtn.dataset.accountNumber = account.account_number;
-                        listItem.appendChild(deleteBtn);
+                        
+                        // BARU: Buat div untuk menampung kedua tombol
+                        const actionButtonsDiv = document.createElement('div');
+                        actionButtonsDiv.className = 'action-buttons';
+                        actionButtonsDiv.appendChild(updateBtn); // Masukkan tombol ubah
+                        actionButtonsDiv.appendChild(deleteBtn); // Masukkan tombol hapus
+
+                        // BARU: Struktur HTML item daftar diperbarui untuk menyertakan grup tombol
+                        listItem.innerHTML = `<div class="account-info"><strong>${account.name}</strong><span class="bank-name">${account.bank_name}</span><code title="Klik untuk menyalin">${account.account_number}</code></div>`;
+                        listItem.appendChild(actionButtonsDiv); // Tambahkan div tombol ke list item
+
                         accountList.appendChild(listItem);
                     });
                 }
@@ -217,6 +245,30 @@
         
         accountList.addEventListener('click', async (event) => {
             const target = event.target;
+
+            // BARU: Logika untuk tombol Ubah Nama
+            if (target.classList.contains('update-btn')) {
+                const accountNumber = target.dataset.accountNumber;
+                const currentName = target.dataset.currentName;
+                const newName = prompt(`Masukkan nama baru untuk nasabah:\n(Akun: ${accountNumber})`, currentName);
+
+                // Lanjutkan jika pengguna memasukkan nama baru dan nama itu berbeda dari yang lama
+                if (newName && newName.trim() !== '' && newName.trim() !== currentName) {
+                    const body = { name: newName.trim() };
+                    const success = await performFetch(`/admin/accounts/${accountNumber}/`, 'PUT', body);
+                    if (success) {
+                        alert('Nama berhasil diperbarui!');
+                        fetchAndDisplayAccounts(); // Refresh daftar akun untuk menampilkan nama baru
+                    }
+                } else if (newName === null) {
+                    // Pengguna menekan "Cancel"
+                    responseArea.textContent = "Aksi ubah nama dibatalkan.";
+                } else {
+                    // Pengguna tidak mengubah nama atau mengosongkan input
+                    responseArea.textContent = "Tidak ada perubahan nama.";
+                }
+            }
+
             if (target.classList.contains('delete-btn')) {
                 const accountNumber = target.dataset.accountNumber;
                 if (confirm(`Anda yakin ingin MENGHAPUS akun ${accountNumber} secara permanen? Aksi ini tidak bisa dibatalkan.`)) {
