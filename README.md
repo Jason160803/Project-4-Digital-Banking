@@ -22,7 +22,8 @@
 3.  **Aktivasi (Windows)**
 
     ```bash
-    .\venv\Scripts\activate
+    .\venv\Scripts\activate untuk powershell dan
+     source venv/Scripts/activate untuk bash
     ```
 
 4.  **Instal Dependensi**
