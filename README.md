@@ -21,10 +21,16 @@
 
 3.  **Aktivasi (Windows)**
 
+    Menggunakan PowerShell:
     ```bash
-    .\venv\Scripts\activate untuk powershell dan
-     source venv/Scripts/activate untuk bash
+    .\venv\Scripts\activate
     ```
+
+    Menggunakan Git Bash:
+    ```bash
+    source venv/Scripts/activate
+    ```
+
 
 4.  **Instal Dependensi**
 
